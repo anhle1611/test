@@ -5,7 +5,7 @@ namespace App\Modules\Guest\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Guest;
-
+use Illuminate\Support\Facades\Log;
 use Validator;
 
 class GuestController extends Controller
@@ -59,15 +59,9 @@ class GuestController extends Controller
 
     public function update(Request $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required',
-        ]);
+        Log::error($request->all());
 
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 422);
-        }
-
-        $guest = Guest::find($id)->updateOrCreate($request->all());
+        $guest = Guest::find($id)->update($request->all());
 
         return response()->json([
             'message' => 'Guest successfully updated',
